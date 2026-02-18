@@ -1,0 +1,19 @@
+[package]
+name = "xml-diff-core"
+version = "0.1.0"
+edition = "2021"
+description = "A fast, general-purpose XML tree differ for Rust"
+license = "BSD-2-Clause"
+repository = "https://github.com/sheridans/pfopn-convert"
+keywords = ["xml", "diff", "compare", "tree"]
+categories = ["parsing", "text-processing"]
+
+[dependencies]
+quick-xml = { version = "0.36", features = ["serialize"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+
+[dev-dependencies]
+pretty_assertions = "1"
+tempfile = "3"

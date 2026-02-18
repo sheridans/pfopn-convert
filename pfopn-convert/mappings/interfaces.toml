@@ -1,0 +1,13 @@
+[from]
+# Example:
+# opt2 = "igc3"
+
+[subnet_expect]
+# Optional expected target IPv4 prefix length by source logical interface.
+# Example:
+# opt2 = "24"
+
+[subnetv6_expect]
+# Optional expected target IPv6 prefix length by source logical interface.
+# Example:
+# opt2 = "64"

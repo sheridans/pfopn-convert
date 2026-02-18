@@ -1,0 +1,63 @@
+[[plugin]]
+id = "wireguard"
+pfsense_markers = ["wireguard"]
+opnsense_markers = ["os-wireguard", "wireguard"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "supported"
+note = "Supported on both platforms."
+
+[[plugin]]
+id = "tailscale"
+pfsense_markers = ["tailscale", "tailscaleauth"]
+opnsense_markers = ["os-tailscale", "tailscale"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "supported"
+note = "Supported on both platforms."
+
+[[plugin]]
+id = "openvpn"
+pfsense_markers = ["openvpn", "ovpnserver", "openvpn-client-export"]
+opnsense_markers = ["openvpn", "os-openvpn-legacy"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "supported"
+note = "Core OpenVPN config exists on both platforms."
+
+[[plugin]]
+id = "ipsec"
+pfsense_markers = ["ipsec"]
+opnsense_markers = ["ipsec", "swanctl", "os-strongswan-legacy"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "partial"
+note = "Both support IPsec but layout and option names differ."
+
+[[plugin]]
+id = "isc-dhcp"
+pfsense_markers = ["dhcpd", "dhcpdv6", "dhcpd6"]
+opnsense_markers = ["os-isc-dhcp", "dhcpd", "dhcpd6", "dhcpdv6"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "supported"
+note = "Legacy ISC DHCP backend is available on both."
+
+[[plugin]]
+id = "kea-dhcp"
+pfsense_markers = ["kea", "dhcpbackend"]
+opnsense_markers = ["kea", "os-kea"]
+compatible_targets = ["pfsense", "opnsense"]
+status = "partial"
+note = "Kea is available on both but XML layout differs."
+
+[[plugin]]
+id = "pfblockerng"
+pfsense_markers = ["pfblockerng", "pfblockerng-devel"]
+opnsense_markers = []
+compatible_targets = ["pfsense"]
+status = "unsupported"
+note = "No direct OPNsense equivalent."
+
+[[plugin]]
+id = "system_patches"
+pfsense_markers = ["system patches", "system_patches", "system_patches_pkg"]
+opnsense_markers = []
+compatible_targets = ["pfsense"]
+status = "unsupported"
+note = "No direct OPNsense equivalent."

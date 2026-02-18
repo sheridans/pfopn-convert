@@ -1,0 +1,3 @@
+[workspace]
+members = ["xml-diff-core", "pfopn-convert"]
+resolver = "2"

@@ -1,0 +1,125 @@
+name: Release Builds
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: pfopn-convert-linux-x86_64.tar.gz
+            binary-name: pfopn-convert
+            run-tests: true
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            archive: pfopn-convert-linux-aarch64.tar.gz
+            binary-name: pfopn-convert
+            run-tests: false
+          - os: ubuntu-latest
+            target: x86_64-unknown-freebsd
+            archive: pfopn-convert-freebsd-x86_64.tar.gz
+            binary-name: pfopn-convert
+            run-tests: false
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            archive: pfopn-convert-macos-x86_64.tar.gz
+            binary-name: pfopn-convert
+            run-tests: false
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: pfopn-convert-windows-x86_64.zip
+            binary-name: pfopn-convert.exe
+            run-tests: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build release binary
+        uses: houseabsolute/actions-rust-cross@v1
+        with:
+          command: build
+          target: ${{ matrix.target }}
+          toolchain: stable
+          args: "--locked --release"
+          strip: true
+
+      - name: Run tests
+        uses: houseabsolute/actions-rust-cross@v1
+        if: matrix.run-tests
+        with:
+          command: test
+          target: ${{ matrix.target }}
+          toolchain: stable
+          args: "--locked --release"
+
+      - name: Package binary
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCHIVE_NAME="${{ matrix.archive }}"
+          rm -f "$ARCHIVE_NAME"
+          if [[ "$ARCHIVE_NAME" == *.zip ]]; then
+            python3 -c "
+          import pathlib
+          import zipfile
+          archive = pathlib.Path('${{ matrix.archive }}')
+          binary = pathlib.Path('target/${{ matrix.target }}/release/${{ matrix.binary-name }}')
+          with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+              zf.write(binary, arcname=binary.name)
+          "
+          else
+            tar -czf "$ARCHIVE_NAME" -C "target/${{ matrix.target }}/release" "${{ matrix.binary-name }}"
+          fi
+          echo "archive=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.archive }}
+          path: ${{ steps.package.outputs.archive }}
+          if-no-files-found: error
+
+  release:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Generate checksums
+        run: |
+          cd artifacts
+          sha256sum * > SHA256SUMS
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

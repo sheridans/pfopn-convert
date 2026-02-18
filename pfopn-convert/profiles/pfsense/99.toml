@@ -1,0 +1,7 @@
+required_sections = ["system", "interfaces", "filter", "future_section_99"]
+rule_required_fields = ["interface"]
+gateway_required_fields = ["name", "interface", "gateway"]
+route_required_fields = ["network"]
+route_required_any_fields = ["gateway", "interface"]
+bridge_require_members = true
+deprecated_sections = []

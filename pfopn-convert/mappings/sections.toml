@@ -1,0 +1,77 @@
+[[mapping]]
+left = "installedpackages"
+right = ["OPNsense"]
+category = "packages"
+note = "pfSense packages typically move under OPNsense plugin container"
+
+[[mapping]]
+left = "aliases"
+right = ["Alias", "aliases"]
+category = "firewall"
+note = "OPNsense aliases are often nested under OPNsense.Firewall.Alias"
+
+[[mapping]]
+left = "gateways"
+right = ["Gateways", "gateway"]
+category = "network"
+note = "gateway definitions may live under OPNsense plugin subtree"
+
+[[mapping]]
+left = "shaper"
+right = ["TrafficShaper", "shaper"]
+category = "firewall"
+note = "traffic shaper settings frequently move to plugin namespace"
+
+[[mapping]]
+left = "cron"
+right = ["cron"]
+category = "system"
+note = "cron commonly appears under OPNsense plugin tree"
+
+[[mapping]]
+left = "dhcpd"
+right = ["dhcpd", "Kea", "isc", "DHCRelay"]
+category = "dhcp"
+note = "legacy ISC DHCP may map to dhcpd, relay, or Kea-based settings"
+
+[[mapping]]
+left = "dhcpdv6"
+right = ["dhcpd6", "dhcpdv6", "Kea", "isc"]
+category = "dhcp"
+note = "IPv6 DHCP can appear as dhcpd6/dhcpdv6 or Kea/ISC variants"
+
+[[mapping]]
+left = "dhcpd6"
+right = ["dhcpd6", "dhcpdv6", "Kea", "isc"]
+category = "dhcp"
+note = "Legacy IPv6 DHCP naming varies between dhcpd6 and dhcpdv6; Kea/ISC may coexist"
+
+[[mapping]]
+left = "dnsmasq"
+right = ["dnsmasq"]
+category = "dns"
+note = "dnsmasq may be enabled directly or represented in plugin subtree"
+
+[[mapping]]
+left = "tailscale"
+right = ["tailscale"]
+category = "vpn"
+note = "Tailscale plugin exists on both platforms; OPNsense typically stores it under OPNsense.tailscale"
+
+[[mapping]]
+left = "tailscaleauth"
+right = ["tailscale"]
+category = "vpn"
+note = "pfSense tailscaleauth data maps into OPNsense tailscale settings/auth fields"
+
+[[mapping]]
+left = "ipsec"
+right = ["IPsec", "Swanctl"]
+category = "vpn"
+note = "IPsec is shared across both, with OPNsense often splitting data under IPsec and Swanctl"
+
+[[mapping]]
+left = "vtimaps"
+right = ["VTIs"]
+category = "vpn"
+note = "pfSense vtimaps commonly correspond to OPNsense Swanctl VTIs"

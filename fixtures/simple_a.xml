@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+  <settings>
+    <name>Example</name>
+    <version>1.0</version>
+    <enabled/>
+  </settings>
+  <items>
+    <item id="1"><value>Alpha</value></item>
+    <item id="2"><value>Beta</value></item>
+    <item id="3"><value>Gamma</value></item>
+  </items>
+</config>
